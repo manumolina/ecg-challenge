@@ -1,0 +1,40 @@
+version: "3.3"
+
+services:
+  api:
+    container_name: "idoven-challenge-api"
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://idoven:idoven@db:65432/idoven_challenge
+    ports:
+      - 5001:8080
+    volumes:
+      - ./api:/usr/src/app
+    depends_on:
+      - db
+
+  nginx:
+    container_name: "idoven-challenge-nginx"
+    build: ./docker/nginx
+    ports:
+      - 80:80
+    depends_on:
+      - api
+
+  db:
+    container_name: "idoven-challenge-db"
+    hostname: app_db
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=idoven
+      - POSTGRES_PASSWORD=idoven
+      - POSTGRES_DB=idoven_challenge
+    ports:
+      - "65432:5432"
+
+volumes:
+  postgres_data:
