@@ -1,12 +1,15 @@
 import uuid
-from datetime import datetime
 
-from services.ecg.schemas.ecg import ECG, ECGImportList
+from services.ecg.schemas.ecg import (
+    ECG, ECGLead, ECGImportList, ECGOutput
+)
 from services.ecg.data_sources.default import ECGData
 
 
 class ECGLogic:
-
+    # ------------- #
+    # Basic methods
+    # ------------- #
     def load(
         self, user_id: uuid.uuid4, ecg_list: ECGImportList
     ) -> dict:
@@ -35,8 +38,8 @@ class ECGLogic:
             if not ecg["total_samples"]:
                 ecg["total_samples"] = len(ecg["signal"])
 
-            ecg["t_cross_zero"] = self.total_zeros_crossing_signal(
-                ecg["signal"]
+            ecg["t_cross_zero"] = self.total_number_crossing_signal(
+                ecg["signal"], 0
             )
             valid_ecgs.append(ecg)
 
@@ -77,6 +80,46 @@ class ECGLogic:
             }
         }
 
+    def get_user_ecgs(self, user_id: uuid.uuid4) -> list[dict]:
+        """Returns a list with the user ECGs found in DB
+
+        Args:
+            user_id (uuid.uuid4)
+
+        Returns:
+            list[ECGOutput]: only allowed fields to be returned
+        """
+        result = ECGData.get(
+            tables=[ECG, ECGLead],
+            where={
+                getattr(ECG, "user"): uuid.UUID(str(user_id))
+            },
+        )
+        return [
+            ECGOutput(**ecg[1].__dict__) for ecg in result
+        ]
+
+    def get_all_ecgs(self):
+        pass
+
+    def get_single_ecg(self):
+        pass
+
+    # ----------- #
+    # Util methods
+    # ----------- #
     @staticmethod
-    def total_zeros_crossing_signal(signal: list):
-        return signal.count(0)
+    def total_number_crossing_signal(
+        signal: list, to_find: int = 0
+    ) -> int:
+        """Returns the total number of occurrences found in the signal.
+
+        Args:
+            signal (list): list of integers
+            to_find (int, optional): number to found in the list. 
+                                     defaults to 0.
+
+        Returns:
+            int: number of occurrences
+        """
+        return signal.count(to_find)

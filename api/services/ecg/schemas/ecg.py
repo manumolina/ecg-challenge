@@ -9,7 +9,7 @@ from core.schemas.base import DBMixin
 
 class ECG(DBMixin, table=True):
     created: datetime = Field(default_factory=datetime.now,)
-    user: str = Field(default=None, foreign_key="user.id")
+    user: uuid.UUID = Field(default=None, foreign_key="user.id")
 
 
 class ECGLead(DBMixin, table=True):
@@ -28,3 +28,10 @@ class ECGImport(BaseModel):
 
 class ECGImportList(BaseModel):
     data: list[ECGImport]
+
+
+class ECGOutput(BaseModel):
+    name: str
+    total_samples: int
+    signal: list
+    t_cross_zero: int

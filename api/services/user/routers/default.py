@@ -3,6 +3,7 @@ from services.user.logic.default import UserLogic
 from services.user.schemas.user import UserImport
 
 CLASS_TAG = "USERS_API"
+PATH_PREFIX = "/admin"
 users_router = APIRouter()
 
 
