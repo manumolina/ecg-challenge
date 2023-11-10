@@ -9,8 +9,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.settings import settings
 from core.database import database
 
-from services.user.routers.default import users_router
-from services.ecg.routers.default import ecg_router
+from services.user.routers.default import (
+    users_router, PATH_PREFIX as USER_PREFIX
+)
+from services.ecg.routers.default import (
+    ecg_router, PATH_PREFIX as ECG_PREFIX
+)
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +55,7 @@ def create_api() -> FastAPI:
     registered_services.append(
         ServiceMeta(
             router=users_router,
-            prefix="/admin",
+            prefix=USER_PREFIX,
             tag=Tag.USER_API,
         ),
     )
@@ -60,7 +64,7 @@ def create_api() -> FastAPI:
     registered_services.append(
         ServiceMeta(
             router=ecg_router,
-            prefix="/sources/ecg",
+            prefix=ECG_PREFIX,
             tag=Tag.ECG_API,
         ),
     )

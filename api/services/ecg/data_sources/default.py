@@ -25,3 +25,17 @@ class ECGData:
                 ECGErrorSavingData()
             except Exception as e:
                 ECGUnknownError(e)
+
+    @staticmethod
+    def get(
+        tables: list,
+        where: dict,
+        offset: int = 0,
+        limit: int = 100
+    ):
+        # tables allowed: ECG, ECGLead
+        with database.session() as session:
+            query = session.query(*tables).join(ECGLead)
+            for key, value in where.items():
+                query = query.filter(key == value)
+            return query.offset(offset).limit(limit).all()
