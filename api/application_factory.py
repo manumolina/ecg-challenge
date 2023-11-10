@@ -7,7 +7,7 @@ from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.settings import settings
-from core.database import init_db
+from core.database import database
 
 from services.user.routers.default import users_router
 from services.ecg.routers.default import ecg_router
@@ -28,7 +28,7 @@ def create_api() -> FastAPI:
 
     @app.on_event("startup")
     def on_startup():
-        init_db()
+        database.init_db()
 
     class Tag(str, Enum):
         ECG_API = "ECG"
