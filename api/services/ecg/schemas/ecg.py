@@ -1,22 +1,23 @@
 import uuid
-
+from datetime import datetime
 from pydantic import BaseModel
 from typing import Optional
-from sqlmodel import Field
+from sqlmodel import Field, Column, ARRAY, Integer
 
 from core.schemas.base import DBMixin
 
 
 class ECG(DBMixin, table=True):
-    date: str
-    user: str  # = Field(default=None, foreign_key="user.id")
+    created: datetime = Field(default_factory=datetime.now,)
+    user: str = Field(default=None, foreign_key="user.id")
 
 
 class ECGLead(DBMixin, table=True):
     ecg_id: uuid.UUID = Field(default=None, foreign_key="ecg.id")
     name: str
     total_samples: int
-    signal: list[int]
+    signal: list = Field(default_factory=list, sa_column=Column(ARRAY(Integer)))
+    t_cross_zero: int
 
 
 class ECGImport(BaseModel):
