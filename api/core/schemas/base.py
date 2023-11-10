@@ -1,6 +1,4 @@
 import uuid
-
-# from pydantic import UUID4
 from sqlalchemy.orm import declared_attr
 from sqlmodel import Field, SQLModel
 

@@ -7,8 +7,9 @@ from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from core.settings import settings
-from core.database import init_db
+from core.database import database
 
+from services.user.routers.default import users_router
 from services.ecg.routers.default import ecg_router
 
 logger = logging.getLogger(__name__)
@@ -27,11 +28,12 @@ def create_api() -> FastAPI:
 
     @app.on_event("startup")
     def on_startup():
-        init_db()
+        database.init_db()
 
     class Tag(str, Enum):
         ECG_API = "ECG"
-        AUTHENTICATION_API = "Authentication API"
+        AUTHENTICATION_API = "Authentication"
+        USER_API = "Users"
 
     @dataclass
     class ServiceMeta:
@@ -44,6 +46,15 @@ def create_api() -> FastAPI:
             return f"{self.tag.value}: {self.prefix}"
 
     registered_services = []
+
+    # USERS ADMINISTRATION
+    registered_services.append(
+        ServiceMeta(
+            router=users_router,
+            prefix="/admin",
+            tag=Tag.USER_API,
+        ),
+    )
 
     # SOURCE ECG API
     registered_services.append(
