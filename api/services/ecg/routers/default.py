@@ -1,7 +1,8 @@
 from typing import Annotated
 from fastapi import APIRouter, Request, Body
 from services.ecg.logic.default import ECGLogic
-from services.ecg.schemas.default import ECGImportList
+from services.ecg.schemas.ecg import ECGImportList
+from services.ecg.exceptions import ECGWithInvalidData
 
 CLASS_TAG = "ECG_API"
 ecg_router = APIRouter()
@@ -16,7 +17,7 @@ async def load_ecg_list(
             examples=[
                 {
                     "name": "User-001-ECG-001",
-                    "total_samples": 100,
+                    "total_samples": 10,
                     "signal": [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
                 }
             ],
@@ -33,7 +34,10 @@ async def load_ecg_list(
         dict: _description_
     """
     try:
-        result = ECGLogic.load(ecg_list.data)
-        return {"message": "Loaded!"}
+        user_id = "cece5379-495c-4746-ac84-a53d35b37a50"
+        result = ECGLogic().load(user_id, ecg_list.data)
+        if result["invalid"]["total"]:
+            ECGWithInvalidData(result["invalid"])
+        return result
     except Exception:
         raise
