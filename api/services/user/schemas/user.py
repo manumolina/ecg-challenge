@@ -14,7 +14,7 @@ class User(DBMixin, table=True):
     email: str
     password: str
     disabled: bool = 0
-    role: int = 0  # 0 - read, 1 - read + write, 99 - admin
+    role: int = 0  # (0) read + write, (99) admin
 
 
 class UserImport(BaseModel):
@@ -49,4 +49,4 @@ class UserView(BaseModel):
     username: str
     email: str
     disabled: bool = 0
-    role: int = 0  # 0 - read, 1 - read + write, 99 - admin
+    role: int = 0  # (0) read + write, (99) admin

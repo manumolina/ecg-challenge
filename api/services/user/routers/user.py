@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Body, Depends, Request
 from core.auth.auth_bearer import JWTBearer
 from services.user.exceptions import UserErrorSignIn
-from services.user.logic.default import UserLogic
+from api.services.user.logic.user import UserLogic
 from services.user.schemas.user import UserImport, UserLoginSchema
 
 CLASS_TAG = "USERS_API"

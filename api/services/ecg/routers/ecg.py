@@ -1,6 +1,8 @@
 from typing import Annotated
-from fastapi import APIRouter, Request, Body
-from services.ecg.logic.default import ECGLogic
+from fastapi import APIRouter, Request, Body, Depends
+
+from core.auth.auth_bearer import JWTBearer
+from api.services.ecg.logic.ecg import ECGLogic
 from services.ecg.schemas.ecg import ECGImportList
 from services.ecg.exceptions import ECGWithInvalidData, ECGUnknownError
 
@@ -9,7 +11,7 @@ PATH_PREFIX = "/sources/ecg"
 ecg_router = APIRouter()
 
 
-@ecg_router.post("/load")
+@ecg_router.post("/load", dependencies=[Depends(JWTBearer(only_admin=False))])
 async def load_ecg_list(
     request: Request,
     ecg_list: Annotated[
@@ -25,8 +27,7 @@ async def load_ecg_list(
         ),
     ],
 ) -> dict:
-    user_id = "cece5379-495c-4746-ac84-a53d35b37a50"
-    result = ECGLogic().load(user_id, ecg_list.data)
+    result = ECGLogic(request).load(ecg_list.data)
     try:
         # Not allowed to save data if invalid ecgs are included
         if result["invalid"]["total"]:
@@ -36,12 +37,11 @@ async def load_ecg_list(
     return result
 
 
-@ecg_router.get("/")
+@ecg_router.get("/", dependencies=[Depends(JWTBearer(only_admin=False))])
 async def retrieve_user_ecgs(
-    request: Request,
+    request: Request
 ) -> dict:
-    user_id = "cece5379-495c-4746-ac84-a53d35b37a50"
-    result = ECGLogic().get_user_ecgs(user_id)
+    result = ECGLogic(request).get_user_ecgs_from_request()
     return {
         "total": len(result),
         "data": result

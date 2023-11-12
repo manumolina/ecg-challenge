@@ -10,6 +10,11 @@ class UserData:
 
     @staticmethod
     def insert(user: User) -> None:
+        """Insert in the DB the ECG header and its signals.
+
+        Args:
+            user (User)
+        """
         with database.session() as session:
             try:
                 session.add(user)
@@ -25,6 +30,16 @@ class UserData:
         offset: int = 0,
         limit: int = 100
     ):
+        """Gets data from DB using information from query.
+
+        Args:
+            where (dict): filter to apply
+            offset (int, optional): Defaults to 0.
+            limit (int, optional): Defaults to 100.
+
+        Returns:
+            list: data extracted from DB
+        """
         # tables allowed: User
         with database.session() as session:
             query = session.query(User)
@@ -33,7 +48,17 @@ class UserData:
             return query.offset(offset).limit(limit).all()
 
     @staticmethod
-    def validate_password_by_email(email: str, password: str):
+    def validate_password_by_email(email: str, password: str) -> dict:
+        """Checks that password correspond to a specific user.
+
+        Args:
+            email (str)
+            password (str)
+
+        Returns:
+            dict: User info from DB
+            or None in case is an invalid password
+        """
         # tables allowed: User
         with database.session() as session:
             query = session.query(User)
@@ -51,6 +76,16 @@ class UserData:
 
     @staticmethod
     def validate_user_has_role_by_email(email: str, role: int):
+        """Checks if user has specific role.
+
+        Args:
+            email (str)
+            role (int)
+
+        Returns:
+            dict: User info from DB
+            or None in case role is not assigned to user
+        """
         # tables allowed: User
         with database.session() as session:
             query = session.query(User)
