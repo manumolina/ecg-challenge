@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Request, Body, Depends
 
 from core.auth.auth_bearer import JWTBearer
-from api.services.ecg.logic.ecg import ECGLogic
+from services.ecg.logic.ecg import ECGLogic
 from services.ecg.schemas.ecg import ECGImportList
 from services.ecg.exceptions import ECGWithInvalidData, ECGUnknownError
 

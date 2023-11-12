@@ -2,9 +2,7 @@ import os
 from collections.abc import Generator
 from contextlib import contextmanager
 
-from sqlalchemy.engine import URL
-from sqlmodel import Session, create_engine
-from sqlmodel import create_engine, SQLModel, Session
+from sqlmodel import Session, create_engine, SQLModel
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 

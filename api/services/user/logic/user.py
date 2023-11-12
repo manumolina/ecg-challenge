@@ -7,7 +7,7 @@ from core.utils import create_random_password, hash_string
 from services.user.schemas.user import (
     User, UserImport, UserLoginSchema, UserView
 )
-from api.services.user.data_sources.user import UserData
+from services.user.data_sources.user import UserData
 
 
 class UserLogic:

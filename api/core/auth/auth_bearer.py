@@ -1,7 +1,7 @@
 from fastapi import Request, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from core.auth.auth_handler import decodeJWT
-from api.services.user.logic.user import UserLogic
+from services.user.logic.user import UserLogic
 
 
 class JWTBearer(HTTPBearer):
@@ -10,19 +10,37 @@ class JWTBearer(HTTPBearer):
         super(JWTBearer, self).__init__(auto_error=auto_error)
 
     async def __call__(self, request: Request):
-        credentials: HTTPAuthorizationCredentials = await super(JWTBearer, self).__call__(request)
+        credentials: HTTPAuthorizationCredentials = await super(
+            JWTBearer, self
+        ).__call__(request)
         if credentials:
             if not credentials.scheme == "Bearer":
-                raise HTTPException(status_code=403, detail="Invalid authentication scheme.")
+                raise HTTPException(
+                    status_code=403, detail="Invalid authentication scheme."
+                )
             if not self.verify_jwt(credentials.credentials):
-                raise HTTPException(status_code=403, detail="Invalid token or expired token.")
-            if self.only_admin is True and not self.verify_is_admin(credentials.credentials):
-                raise HTTPException(status_code=403, detail="Invalid user role. Only administrators allowed.")
-            if self.only_admin is False and self.verify_is_admin(credentials.credentials):
-                raise HTTPException(status_code=403, detail="Invalid user role. Not allowed to administrators.")
+                raise HTTPException(
+                    status_code=403, detail="Invalid token or expired token."
+                )
+            if self.only_admin is True and not self.verify_is_admin(
+               credentials.credentials
+            ):
+                raise HTTPException(
+                    status_code=403,
+                    detail="Invalid user role. Only administrators allowed."
+                )
+            if self.only_admin is False and self.verify_is_admin(
+               credentials.credentials
+            ):
+                raise HTTPException(
+                    status_code=403,
+                    detail="Invalid user role. Not allowed to administrators."
+                )
             return credentials.credentials
         else:
-            raise HTTPException(status_code=403, detail="Invalid authorization code.")
+            raise HTTPException(
+                status_code=403, detail="Invalid authorization code."
+            )
 
     def verify_jwt(self, jwtoken: str) -> bool:
         """Checks if JWT is valid decoding it
