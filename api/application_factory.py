@@ -9,10 +9,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.settings import settings
 from core.database import database
 
-from services.user.routers.default import (
+from api.services.user.routers.user import (
     users_router, PATH_PREFIX as USER_PREFIX
 )
-from services.ecg.routers.default import (
+from api.services.ecg.routers.ecg import (
     ecg_router, PATH_PREFIX as ECG_PREFIX
 )
 

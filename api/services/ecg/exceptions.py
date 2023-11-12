@@ -1,31 +1,22 @@
 from fastapi import HTTPException, status
+from core.exceptions import BaseUnknownError, BaseErrorSavingData
 
 
 def ECGUnknownError(error: str):
-    raise HTTPException(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        detail={
-            "message": f"Unknown Error: {error}"
-        }
-    )
+    BaseUnknownError(error)
+
+
+def ECGErrorSavingData():
+    BaseErrorSavingData()
 
 
 def ECGWithInvalidData(data: dict):
-    """Base Error for
+    """Used if any value from request are not valid
     """
     raise HTTPException(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         detail={
             "message": "Some ECGs are not valid",
             "data": data
-        }
-    )
-
-
-def ECGErrorSavingData():
-    raise HTTPException(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        detail={
-            "message": "There was an error saving data in the Database"
         }
     )

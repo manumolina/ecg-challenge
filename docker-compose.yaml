@@ -8,6 +8,8 @@ services:
       dockerfile: ./docker/api/Dockerfile
     environment:
       - DATABASE_URL=postgresql://idoven:idoven@db:5432/idoven_challenge
+      - AUTH_SECRET=idoven_challenge
+      - AUTH_ALGORITHM=HS256
     ports:
       - 5001:8080
     volumes:
