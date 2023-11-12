@@ -1,17 +1,21 @@
 import uuid
-
+from fastapi import Request
 from services.ecg.schemas.ecg import (
     ECG, ECGLead, ECGImportList, ECGOutput
 )
-from services.ecg.data_sources.default import ECGData
+from api.services.ecg.data_sources.ecg import ECGData
+from api.services.user.logic.user import UserLogic
 
 
 class ECGLogic:
+    def __init__(self, request: Request) -> None:
+        self.user_id = UserLogic().get_user_id_from_request(request)
+
     # ------------- #
     # Basic methods
     # ------------- #
     def load(
-        self, user_id: uuid.uuid4, ecg_list: ECGImportList
+        self, ecg_list: ECGImportList
     ) -> dict:
         """This method:
         * Analize total samples and signals are equal
@@ -19,7 +23,6 @@ class ECGLogic:
         * Save info in DB
 
         Args:
-            user_id (uuid.uuid4)
             ecg_list (ECGImportList): list of ecgs to saved
 
         Returns:
@@ -30,8 +33,8 @@ class ECGLogic:
         for ecg_object in ecg_list:
             ecg = ecg_object.__dict__
             if "total_samples" in ecg.keys() \
-               and ecg["total_samples"] \
-               and ecg["total_samples"] != len(ecg["signal"]):
+               and (ecg["total_samples"] <= 0
+               or ecg["total_samples"] and ecg["total_samples"] != len(ecg["signal"])):
                 invalid_ecgs.append(ecg)
                 continue
 
@@ -44,7 +47,7 @@ class ECGLogic:
             valid_ecgs.append(ecg)
 
         return self.save(
-            user_id, valid_ecgs, invalid_ecgs
+            self.user_id, valid_ecgs, invalid_ecgs
         )
 
     @staticmethod
@@ -80,11 +83,11 @@ class ECGLogic:
             }
         }
 
-    def get_user_ecgs(self, user_id: uuid.uuid4) -> list[dict]:
+    def get_user_ecgs_from_request(self) -> list[dict]:
         """Returns a list with the user ECGs found in DB
 
         Args:
-            user_id (uuid.uuid4)
+            request (Request)
 
         Returns:
             list[ECGOutput]: only allowed fields to be returned
@@ -92,7 +95,7 @@ class ECGLogic:
         result = ECGData.get(
             tables=[ECG, ECGLead],
             where={
-                getattr(ECG, "user"): uuid.UUID(str(user_id))
+                getattr(ECG, "user"): uuid.UUID(str(self.user_id))
             },
         )
         return [
@@ -116,7 +119,7 @@ class ECGLogic:
 
         Args:
             signal (list): list of integers
-            to_find (int, optional): number to found in the list. 
+            to_find (int, optional): number to found in the list.
                                      defaults to 0.
 
         Returns:
