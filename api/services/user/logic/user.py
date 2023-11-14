@@ -1,4 +1,4 @@
-import uuid
+from uuid import uuid4
 from fastapi import Request
 from fastapi.security.utils import get_authorization_scheme_param
 
@@ -47,7 +47,7 @@ class UserLogic:
         return [UserView(**user.__dict__) for user in UserData.get({})]
 
     @staticmethod
-    def get_user_id_from_email(email: str) -> uuid.uuid4:
+    def get_user_id_from_email(email: str) -> uuid4:
         """Returns User ID searching by email.
 
         Args:
@@ -104,7 +104,7 @@ class UserLogic:
 
     def get_user_id_from_request(
         self, request: Request
-    ) -> uuid.uuid4:
+    ) -> uuid4:
         """Extract current token if exists from request header.
         Search for the associated user id and returns it.
 

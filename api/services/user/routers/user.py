@@ -28,7 +28,7 @@ async def set_user(
     request: Request,
     user: UserImport
 ) -> dict:
-    result = UserLogic().new(user)
+    result = UserLogic.new(user)
     return {
         "message": "User created. Save your password in a safe place.",
         "data": result

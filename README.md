@@ -86,8 +86,9 @@ http://localhost:5001/redoc
 ## Tests
 To check the current coverage of the server program:  
 > docker exec -it idoven-challenge-api /bin/bash
-
-> pytest --cov=. tests/
+> poetry run pytest --cov -v -p no:warnings --no-cov-on-fail tests/
+or
+> docker exec idoven-challenge-api poetry run pytest --cov -v -p no:warnings --no-cov-on-fail tests/
 
 ## Status
 Project is: _in progress_  

@@ -14,6 +14,7 @@ pythonpath = [
 branch = true
 omit = [
     "*/main.py",         # skip main files
+    "tests/*",         # skip tests
 ]
 
 [tool.coverage.report]
