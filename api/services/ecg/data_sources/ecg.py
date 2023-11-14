@@ -1,4 +1,4 @@
-import uuid
+from uuid import uuid4
 from core.database import database
 from services.ecg.schemas.ecg import ECG, ECGLead
 from services.ecg.exceptions import ECGErrorSavingData, ECGUnknownError
@@ -9,7 +9,7 @@ class ECGData:
 
     @staticmethod
     def insert(
-        user_id: uuid.uuid4, ecg_lead_list: list[ECG]
+        user_id: uuid4, ecg_lead_list: list[ECG]
     ) -> None:
         """Insert in the DB the ECG header and its signals.
 

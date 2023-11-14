@@ -3,8 +3,8 @@ from fastapi import Request
 from services.ecg.schemas.ecg import (
     ECG, ECGLead, ECGImportList, ECGOutput
 )
-from api.services.ecg.data_sources.ecg import ECGData
-from api.services.user.logic.user import UserLogic
+from services.ecg.data_sources.ecg import ECGData
+from services.user.logic.user import UserLogic
 
 
 class ECGLogic:

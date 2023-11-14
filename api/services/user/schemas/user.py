@@ -1,9 +1,16 @@
+import uuid
 from datetime import datetime
+from enum import Enum
 from pydantic import BaseModel, EmailStr
 from sqlalchemy import UniqueConstraint
 from sqlmodel import Field
 
 from core.schemas.base import DBMixin
+
+
+class Roles(int, Enum):
+    admin: 99
+    standard: 0
 
 
 class User(DBMixin, table=True):
@@ -14,7 +21,7 @@ class User(DBMixin, table=True):
     email: str
     password: str
     disabled: bool = 0
-    role: int = 0  # (0) read + write, (99) admin
+    role: Roles = 0  # (0) read + write, (99) admin
 
 
 class UserImport(BaseModel):
@@ -50,3 +57,14 @@ class UserView(BaseModel):
     email: str
     disabled: bool = 0
     role: int = 0  # (0) read + write, (99) admin
+
+
+class UserDBView(BaseModel):
+    id: uuid.UUID
+    created: datetime
+    updated: datetime
+    username: str
+    email: str
+    password: str
+    disabled: bool
+    role: int
