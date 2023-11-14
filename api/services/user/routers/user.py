@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Body, Depends, Request
+
 from core.auth.auth_bearer import JWTBearer
 from services.user.exceptions import UserErrorSignIn
 from services.user.logic.user import UserLogic
@@ -13,7 +14,7 @@ users_router = APIRouter()
 async def user_login(user: UserLoginSchema = Body(...)):
     result = UserLogic().check_user(user)
     if not result:
-        raise UserErrorSignIn()
+        raise UserErrorSignIn
     return result
 
 
@@ -26,10 +27,10 @@ async def get_user_list() -> list[dict]:
 @users_router.post("/", dependencies=[Depends(JWTBearer(only_admin=True))])
 async def set_user(
     request: Request,
-    user: UserImport
+    user: UserImport,
 ) -> dict:
     result = UserLogic.new(user)
     return {
         "message": "User created. Save your password in a safe place.",
-        "data": result
+        "data": result,
     }

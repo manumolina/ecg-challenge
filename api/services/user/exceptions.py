@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
-from core.exceptions import BaseUnknownError, BaseErrorSavingData
+
+from core.exceptions import BaseErrorSavingData, BaseUnknownError
 
 
 def UserUnknownError(error: str):
@@ -15,6 +16,6 @@ def UserErrorSignIn():
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail={
             "message": "Invalid Login",
-            "data": {}
-        }
+            "data": {},
+        },
     )

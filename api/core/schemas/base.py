@@ -1,4 +1,5 @@
 import uuid
+
 from sqlalchemy.orm import declared_attr
 from sqlmodel import Field, SQLModel
 

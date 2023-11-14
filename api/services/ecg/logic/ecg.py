@@ -1,9 +1,9 @@
 import uuid
+
 from fastapi import Request
-from services.ecg.schemas.ecg import (
-    ECG, ECGLead, ECGImportList, ECGOutput
-)
+
 from services.ecg.data_sources.ecg import ECGData
+from services.ecg.schemas.ecg import ECG, ECGImportList, ECGLead, ECGOutput
 from services.user.logic.user import UserLogic
 
 
@@ -15,24 +15,26 @@ class ECGLogic:
     # Basic methods
     # ------------- #
     def load(
-        self, ecg_list: ECGImportList
+        self, ecg_list: ECGImportList,
     ) -> dict:
         """This method:
         * Analize total samples and signals are equal
         * Execute algorithm to calculate nº of zeros in signals
-        * Save info in DB
+        * Save info in DB.
 
         Args:
+        ----
             ecg_list (ECGImportList): list of ecgs to saved
 
         Returns:
+        -------
             dict: result of the operation
         """
         valid_ecgs = []
         invalid_ecgs = []
         for ecg_object in ecg_list:
             ecg = ecg_object.__dict__
-            if "total_samples" in ecg.keys() \
+            if "total_samples" in ecg \
                and (ecg["total_samples"] <= 0
                or ecg["total_samples"] and ecg["total_samples"] != len(ecg["signal"])):
                 invalid_ecgs.append(ecg)
@@ -42,30 +44,32 @@ class ECGLogic:
                 ecg["total_samples"] = len(ecg["signal"])
 
             ecg["t_cross_zero"] = self.total_number_crossing_signal(
-                ecg["signal"], 0
+                ecg["signal"], 0,
             )
             valid_ecgs.append(ecg)
 
         return self.save(
-            self.user_id, valid_ecgs, invalid_ecgs
+            self.user_id, valid_ecgs, invalid_ecgs,
         )
 
     @staticmethod
     def save(
         user_id: uuid.uuid4,
         valid_ecgs: list[dict],
-        invalid_ecgs: list[dict]
+        invalid_ecgs: list[dict],
     ) -> dict:
         """Save valid ecgs in the DB.
         Returns a dictionary with information
         about the result of the operation.
 
         Args:
+        ----
             user_id (uuid.uuid4)
             valid_ecgs (list): contains valid ECG objects
             invalid_ecgs (list): contains invalid ECG objects
 
         Returns:
+        -------
             dict: result of the operation
         """
         # save only if all ecgs are valid
@@ -79,23 +83,25 @@ class ECGLogic:
             "valid": len(valid_ecgs),
             "invalid": {
                 "total": len(invalid_ecgs),
-                "data": invalid_ecgs
-            }
+                "data": invalid_ecgs,
+            },
         }
 
     def get_user_ecgs_from_request(self) -> list[dict]:
-        """Returns a list with the user ECGs found in DB
+        """Returns a list with the user ECGs found in DB.
 
         Args:
+        ----
             request (Request)
 
         Returns:
+        -------
             list[ECGOutput]: only allowed fields to be returned
         """
         result = ECGData.get(
             tables=[ECG, ECGLead],
             where={
-                getattr(ECG, "user"): uuid.UUID(str(self.user_id))
+                ECG.user: uuid.UUID(str(self.user_id)),
             },
         )
         return [
@@ -113,16 +119,18 @@ class ECGLogic:
     # ----------- #
     @staticmethod
     def total_number_crossing_signal(
-        signal: list, to_find: int = 0
+        signal: list, to_find: int = 0,
     ) -> int:
         """Returns the total number of occurrences found in the signal.
 
         Args:
+        ----
             signal (list): list of integers
             to_find (int, optional): number to found in the list.
                                      defaults to 0.
 
         Returns:
+        -------
             int: number of occurrences
         """
         return signal.count(to_find)

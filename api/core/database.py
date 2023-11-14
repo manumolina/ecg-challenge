@@ -2,7 +2,7 @@ import os
 from collections.abc import Generator
 from contextlib import contextmanager
 
-from sqlmodel import Session, create_engine, SQLModel
+from sqlmodel import Session, SQLModel, create_engine
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
