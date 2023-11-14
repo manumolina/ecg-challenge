@@ -100,5 +100,4 @@ class UserData:
             query = query.where(User.email == email)
             query = query.where(User.role == role)
             query = query.limit(1)
-            results = session.exec(query).all()
-            return results
+            return session.exec(query).all()

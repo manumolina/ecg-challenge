@@ -11,7 +11,7 @@ At Idoven, we have a specific requirement. We aim to implement a microservice th
 ## Table of contents
 * [General info](#general-info)
 * [Requirements](#requirements)
-* [Technical Specifications](#technologies-specifications)
+* [Technical Specifications](#technical-specifications)
 * [Technologies and libraries](#technologies-and-libraries)
 * [Setup](#setup)
 * [Technical decisions](#technical-decisions)
@@ -41,7 +41,9 @@ All of them are only allowed to authenticated users with the admin role.
 
 ## Technical Specifications
 
-In undertaking this assignment, you're afforded the autonomy to select your preferred programming language, technologies, frameworks, documentation techniques, and testing strategy. We highly value solutions that prioritize readability, maintainability, and the thoughtful application of design patterns and architectural principles. While you have flexibility, keep in mind our primary tech stack revolves around Python and FastAPI.
+In undertaking this assignment, you're afforded the autonomy to select your preferred programming language, technologies, frameworks, documentation techniques, and testing strategy.  
+
+We highly value solutions that prioritize readability, maintainability, and the thoughtful application of design patterns and architectural principles. While you have flexibility, keep in mind our primary tech stack revolves around Python and FastAPI.
 
 ## Technologies and libraries
 API
@@ -56,14 +58,13 @@ API
 ## Setup
 The easiest way to work with this server program is working with Docker containers.  
 I recommend you the next steps:
-> git clone https://github.com/manumolina/idoven-challenge/
-> cd idoven-challenge
+> git clone https://github.com/manumolina/idoven-challenge/  
+> cd idoven-challenge  
 > docker-compose build  
-> docker-compose up -d
+> docker-compose up -d  
 
 ## Technical decisions
-For the back-end I decided to use [FastAPI](https://fastapi.tiangolo.com/)  
-to complete this task for next pros:
+The back-end chosen to complete this task is [FastAPI](https://fastapi.tiangolo.com/). The main reasons are:
 * simplicity of the framework 
 * short development time
 * very fast responses
@@ -76,6 +77,10 @@ Regarding the database, I decided to work with PostgreSQL because:
 * possibility to use multidimensional arrays
 * simple installation
 
+User Management:  
+* Because the user management is not included in the scope of the challenge, users can't add its own password.  
+* Passwords are generated automatically and returned to the user to be saved.
+
 ## Documentation
 You can find the complete documentation of the API 
 (metadata, endpoints, schemas, operation parameters, etc..) in the next URLs provided by FastAPI: 
@@ -85,10 +90,19 @@ http://localhost:5001/redoc
 
 ## Tests
 To check the current coverage of the server program:  
-> docker exec -it idoven-challenge-api /bin/bash
-> poetry run pytest --cov -v -p no:warnings --no-cov-on-fail tests/
-or
-> docker exec idoven-challenge-api poetry run pytest --cov -v -p no:warnings --no-cov-on-fail tests/
+> docker exec -it idoven-challenge-api /bin/bash  
+> poetry run pytest --cov -v -p no:warnings --no-cov-on-fail tests/  
+
+or  
+
+> docker exec idoven-challenge-api poetry run pytest --cov -v -p no:warnings --no-cov-on-fail tests/  
+
+At the time the environment is created, three test users are also created:  
+> admin@idoven-challenge.com:VYZfg8w7xvIUR7GdzjrIgYUNnjIKFM9R  
+> user_1@idoven-challenge.com:gCPiYzbjE3VrUXYzFLq3TIA0HlScjFdS  
+> user_2@idoven-challenge.com:smz4Ui79xCNxZKaTgKkP82Yy0T1az0XU  
+
+More users can be created using the appropriate endpoint.  
 
 ## Status
 Project is: _in progress_  
