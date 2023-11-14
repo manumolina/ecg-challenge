@@ -1,28 +1,30 @@
 import os
-import jwt
 import time
-from typing import Dict
+
+import jwt
 
 JWT_SECRET = os.getenv("AUTH_SECRET")
 JWT_ALGORITHM = os.getenv("AUTH_ALGORITHM")
 JWT_EXPIRE_TIME = 600
 
 
-def signJWT(user_email: str, role: int) -> Dict[str, str]:
+def signJWT(user_email: str, role: int) -> dict[str, str]:
     """Encodes info from user to generate a JWT.
     It is returned within a dictionary.
 
     Args:
+    ----
         user_email (str)
         role (int)
 
     Returns:
+    -------
         Dict[str, str]
     """
     payload = {
         "user_email": user_email,
         "role": role,
-        "expires": time.time() + JWT_EXPIRE_TIME
+        "expires": time.time() + JWT_EXPIRE_TIME,
     }
     token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
     return {"access_token": token}
@@ -33,9 +35,11 @@ def decodeJWT(token: str) -> dict:
     Returns None if token is expired.
 
     Args:
+    ----
         token (str)
 
     Returns:
+    -------
         dict: info extracted from token
         or None in case token expired
     """
@@ -51,9 +55,11 @@ def get_payload(jwtoken: str) -> dict:
     or None in case something fails.
 
     Args:
+    ----
         jwtoken (str)
 
     Returns:
+    -------
         dict : info extracted from token
         or None in case something fails.
     """

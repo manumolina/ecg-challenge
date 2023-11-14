@@ -1,19 +1,22 @@
 from uuid import uuid4
-from core.database import database
-from services.ecg.schemas.ecg import ECG, ECGLead
-from services.ecg.exceptions import ECGErrorSavingData, ECGUnknownError
+
 from sqlalchemy import exc
+
+from core.database import database
+from services.ecg.exceptions import ECGErrorSavingData, ECGUnknownError
+from services.ecg.schemas.ecg import ECG, ECGLead
 
 
 class ECGData:
 
     @staticmethod
     def insert(
-        user_id: uuid4, ecg_lead_list: list[ECG]
+        user_id: uuid4, ecg_lead_list: list[ECG],
     ) -> None:
         """Insert in the DB the ECG header and its signals.
 
         Args:
+        ----
             user_id (uuid.uuid4)
             ecg_lead_list (list[ECG])
         """
@@ -37,17 +40,19 @@ class ECGData:
         tables: list,
         where: dict,
         offset: int = 0,
-        limit: int = 100
+        limit: int = 100,
     ) -> list:
         """Gets data from DB using information from query.
 
         Args:
+        ----
             tables (list): tables involved in the query
             where (dict): filter to apply
             offset (int, optional): Defaults to 0.
             limit (int, optional): Defaults to 100.
 
         Returns:
+        -------
             list: data extracted from DB
         """
         # tables allowed: ECG, ECGLead

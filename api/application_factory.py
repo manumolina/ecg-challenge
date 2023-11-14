@@ -6,15 +6,12 @@ from typing import Any
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from core.settings import settings
 from core.database import database
-
-from services.user.routers.user import (
-    users_router, PATH_PREFIX as USER_PREFIX
-)
-from services.ecg.routers.ecg import (
-    ecg_router, PATH_PREFIX as ECG_PREFIX
-)
+from core.settings import settings
+from services.ecg.routers.ecg import PATH_PREFIX as ECG_PREFIX
+from services.ecg.routers.ecg import ecg_router
+from services.user.routers.user import PATH_PREFIX as USER_PREFIX
+from services.user.routers.user import users_router
 
 logger = logging.getLogger(__name__)
 

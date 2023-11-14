@@ -1,7 +1,8 @@
 import os
+from unittest.mock import patch
+
 from application_factory import create_api
 from services.user.routers.user import PATH_PREFIX
-from unittest.mock import patch
 
 app = create_api()
 
@@ -37,25 +38,25 @@ def test_get_user_list_without_token(authenticate_mock_client):
 
 
 def test_get_user_list_with_standard_token(
-    authenticate_mock_client, get_test_standard_token
+    authenticate_mock_client, get_test_standard_token,
 ):
     path = PATH_PREFIX
     response = authenticate_mock_client.get(
         path,
-        headers={'Authorization': '{} {}'.format(*get_test_standard_token)}
+        headers={"Authorization": "{} {}".format(*get_test_standard_token)},
     )
-    expected_error = {'detail': 'Invalid user role. Only administrators allowed.'}
+    expected_error = {"detail": "Invalid user role. Only administrators allowed."}
     assert response.status_code == 403
     assert response.json() == expected_error
 
 
 def test_get_user_list_with_admin_token(
-    authenticate_mock_client, get_test_admin_token
+    authenticate_mock_client, get_test_admin_token,
 ):
     path = PATH_PREFIX
     response = authenticate_mock_client.get(
         path,
-        headers={'Authorization': '{} {}'.format(*get_test_admin_token)}
+        headers={"Authorization": "{} {}".format(*get_test_admin_token)},
     )
     assert response.status_code == 200
 
@@ -74,7 +75,7 @@ def test_create_new_user_without_token(authenticate_mock_client):
 
 
 def test_create_new_user_with_standard_token(
-    authenticate_mock_client, get_test_standard_token
+    authenticate_mock_client, get_test_standard_token,
 ):
     path = PATH_PREFIX
     response = authenticate_mock_client.post(
@@ -84,16 +85,16 @@ def test_create_new_user_with_standard_token(
             "email": "test@idoven-challenge.com",
             "role": "0",
         },
-        headers={'Authorization': '{} {}'.format(*get_test_standard_token)}
+        headers={"Authorization": "{} {}".format(*get_test_standard_token)},
     )
-    expected_error = {'detail': 'Invalid user role. Only administrators allowed.'}
+    expected_error = {"detail": "Invalid user role. Only administrators allowed."}
     assert response.status_code == 403
     assert response.json() == expected_error
 
 
 @patch("services.user.logic.user.UserLogic.new")
 def test_create_new_user_with_admin_token(
-    mock_new_user, authenticate_mock_client, get_test_admin_token
+    mock_new_user, authenticate_mock_client, get_test_admin_token,
 ):
     path = PATH_PREFIX
     mock_new_user.return_value = {}
@@ -104,6 +105,6 @@ def test_create_new_user_with_admin_token(
             "email": "test@idoven-challenge.com",
             "role": 0,
         },
-        headers={'Authorization': '{} {}'.format(*get_test_admin_token)}
+        headers={"Authorization": "{} {}".format(*get_test_admin_token)},
     )
     assert response.status_code == 200

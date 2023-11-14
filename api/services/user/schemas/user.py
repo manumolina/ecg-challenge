@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 from enum import Enum
+
 from pydantic import BaseModel, EmailStr
 from sqlalchemy import UniqueConstraint
 from sqlmodel import Field
@@ -15,8 +16,8 @@ class Roles(int, Enum):
 
 class User(DBMixin, table=True):
     __table_args__ = (UniqueConstraint("email"),)
-    created: datetime = Field(default_factory=datetime.now,)
-    updated: datetime = Field(default_factory=datetime.now,)
+    created: datetime = Field(default_factory=datetime.now)
+    updated: datetime = Field(default_factory=datetime.now)
     username: str
     email: str
     password: str
@@ -34,8 +35,8 @@ class UserImport(BaseModel):
             "example": {
                 "username": "test_idoven",
                 "email": "test@idoven-challenge.com",
-                "role": "0"
-            }
+                "role": "0",
+            },
         }
 
 
@@ -47,8 +48,8 @@ class UserLoginSchema(BaseModel):
         schema_extra = {
             "example": {
                 "email": "test@idoven-challenge.com",
-                "password": "idovenpassword"
-            }
+                "password": "idovenpassword",
+            },
         }
 
 

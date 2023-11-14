@@ -1,6 +1,7 @@
-import string
 import random
 import re
+import string
+
 from passlib.context import CryptContext
 
 DEFAULT_PASS_LEN = 32
@@ -14,11 +15,10 @@ def create_random_password(pass_len: int = DEFAULT_PASS_LEN):
     characterList = ""
     characterList += string.ascii_letters
     characterList += string.digits
-    # characterList += string.punctuation
     password = []
-    for i in range(pass_len):
+    for _ in range(pass_len):
         password.append(
-            random.choice(characterList)
+            random.choice(characterList),
         )
     return "".join(password)
 

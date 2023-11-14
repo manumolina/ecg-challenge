@@ -1,5 +1,5 @@
-from sqlalchemy import exc
 from passlib.context import CryptContext
+from sqlalchemy import exc
 
 from core.database import database
 from services.user.exceptions import UserErrorSavingData, UserUnknownError
@@ -13,6 +13,7 @@ class UserData:
         """Insert in the DB the ECG header and its signals.
 
         Args:
+        ----
             user (User)
         """
         with database.session() as session:
@@ -28,16 +29,18 @@ class UserData:
     def get(
         where: dict,
         offset: int = 0,
-        limit: int = 100
+        limit: int = 100,
     ):
         """Gets data from DB using information from query.
 
         Args:
+        ----
             where (dict): filter to apply
             offset (int, optional): Defaults to 0.
             limit (int, optional): Defaults to 100.
 
         Returns:
+        -------
             list: data extracted from DB
         """
         # tables allowed: User
@@ -52,10 +55,12 @@ class UserData:
         """Checks that password correspond to a specific user.
 
         Args:
+        ----
             email (str)
             password (str)
 
         Returns:
+        -------
             dict: User info from DB
             or None in case is an invalid password
         """
@@ -69,20 +74,23 @@ class UserData:
                 user = r[0]
                 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
                 if not pwd_context.verify(
-                    password, user.__dict__["password"]
+                    password, user.__dict__["password"],
                 ):
                     return False
                 return user.__dict__
+            return None
 
     @staticmethod
     def validate_user_has_role_by_email(email: str, role: int):
         """Checks if user has specific role.
 
         Args:
+        ----
             email (str)
             role (int)
 
         Returns:
+        -------
             dict: User info from DB
             or None in case role is not assigned to user
         """
