@@ -10,11 +10,11 @@ def test_new_user_with_valid_data(mock_user_data_insert):
     # Should return a valid User object with a random password
     mock_user_data_insert.return_value = None
 
-    user_test = UserImport(**{
-        "username": "test",
-        "email": "test@test.com",
-        "role": 0,
-    })
+    user_test = UserImport(
+        username="test",
+        email="test@test.com",
+        role=0,
+    )
     result = UserLogic.new(user_test)
     user_test_keys = list(user_test.__dict__.keys())
     assert list(result.keys()) == user_test_keys

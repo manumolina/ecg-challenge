@@ -1,4 +1,4 @@
 id,created,updated,username,email,password,disabled,role
-027339d4-e2c4-45a2-bd9b-f1abddfdd31c,2023-11-11 19:47:33.182,2023-11-11 19:47:33.182,admin,admin@idoven-challenge.com,$2b$12$3fMW4Jd.2ezQZ/YJiw5en.lnxlAlKp0xVLWilnU.BI4E3Pdnlh3Am,false,99
-5874504d-0d31-4396-8a81-dd614322854a,2023-11-12 16:31:35.085,2023-11-12 16:31:35.085,user_1,user_1@idoven-challenge.com,$2b$12$cQok/cCY39osG67x/zQmp.kCD2fzeCKSYEZAcrGuuRUJ8CBsvIAkS,false,0
-df1af3b5-9900-408c-a7a7-5d302039e07e,2023-11-12 16:41:03.912,2023-11-12 16:41:03.912,user_2,user_2@idoven-challenge.com,$2b$12$16MWBg1.e7JCoFU9.tFCNumyg8aB0u.YKS6QBMcJVuxdEKkOVRQji,false,0
+027339d4-e2c4-45a2-bd9b-f1abddfdd31c,2023-11-11 19:47:33.182,2023-11-11 19:47:33.182,admin,admin@fastapi-challenge.com,$2b$12$3fMW4Jd.2ezQZ/YJiw5en.lnxlAlKp0xVLWilnU.BI4E3Pdnlh3Am,false,99
+5874504d-0d31-4396-8a81-dd614322854a,2023-11-12 16:31:35.085,2023-11-12 16:31:35.085,user_1,user_1@fastapi-challenge.com,$2b$12$cQok/cCY39osG67x/zQmp.kCD2fzeCKSYEZAcrGuuRUJ8CBsvIAkS,false,0
+df1af3b5-9900-408c-a7a7-5d302039e07e,2023-11-12 16:41:03.912,2023-11-12 16:41:03.912,user_2,user_2@fastapi-challenge.com,$2b$12$16MWBg1.e7JCoFU9.tFCNumyg8aB0u.YKS6QBMcJVuxdEKkOVRQji,false,0

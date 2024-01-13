@@ -24,7 +24,7 @@ def test_login_with_valid_credentials(authenticate_mock_client):
     response = authenticate_mock_client.post(
         path,
         json={
-            "email": "user_1@idoven-challenge.com",
+            "email": "user_1@fastapi-challenge.com",
             "password": "gCPiYzbjE3VrUXYzFLq3TIA0HlScjFdS",
         },
     )
@@ -66,8 +66,8 @@ def test_create_new_user_without_token(authenticate_mock_client):
     response = authenticate_mock_client.post(
         path,
         json={
-            "username": "test_idoven",
-            "email": "test@idoven-challenge.com",
+            "username": "test_fastapi",
+            "email": "test@fastapi-challenge.com",
             "role": "0",
         },
     )
@@ -81,8 +81,8 @@ def test_create_new_user_with_standard_token(
     response = authenticate_mock_client.post(
         path,
         json={
-            "username": "test_idoven",
-            "email": "test@idoven-challenge.com",
+            "username": "test_fastapi",
+            "email": "test@fastapi-challenge.com",
             "role": "0",
         },
         headers={"Authorization": "{} {}".format(*get_test_standard_token)},
@@ -101,8 +101,8 @@ def test_create_new_user_with_admin_token(
     response = authenticate_mock_client.post(
         path,
         json={
-            "username": "test_idoven",
-            "email": "test@idoven-challenge.com",
+            "username": "test_fastapi",
+            "email": "test@fastapi-challenge.com",
             "role": 0,
         },
         headers={"Authorization": "{} {}".format(*get_test_admin_token)},

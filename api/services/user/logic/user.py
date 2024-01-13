@@ -13,6 +13,7 @@ class UserLogic:
     @staticmethod
     def new(user: UserImport) -> dict:
         """Generates a new user.
+
         Steps:
         * creates random password
         * encrypts password
@@ -39,6 +40,7 @@ class UserLogic:
     @staticmethod
     def get_all() -> list[UserView]:
         """Method only allowed to admin users.
+
         Returns list of existing users in DB
         but with only non critical information.
 
@@ -72,6 +74,7 @@ class UserLogic:
     @staticmethod
     def check_user(user: UserLoginSchema) -> str:
         """Checks if user (email + pass) are valids.
+
         If so, returns JWT using these data.
 
         Args:

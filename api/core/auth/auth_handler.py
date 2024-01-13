@@ -1,7 +1,8 @@
 import os
 import time
-
 import jwt
+
+from libs.logger import logger
 
 JWT_SECRET = os.getenv("AUTH_SECRET")
 JWT_ALGORITHM = os.getenv("AUTH_ALGORITHM")
@@ -10,7 +11,6 @@ JWT_EXPIRE_TIME = 600
 
 def signJWT(user_email: str, role: int) -> dict[str, str]:
     """Encodes info from user to generate a JWT.
-    It is returned within a dictionary.
 
     Args:
     ----
@@ -32,7 +32,6 @@ def signJWT(user_email: str, role: int) -> dict[str, str]:
 
 def decodeJWT(token: str) -> dict:
     """Decodes JWT.
-    Returns None if token is expired.
 
     Args:
     ----
@@ -46,13 +45,13 @@ def decodeJWT(token: str) -> dict:
     try:
         decoded_token = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         return decoded_token if decoded_token["expires"] >= time.time() else None
-    except Exception:
+    except Exception as e:
+        logger.exception(e)
         return {}
 
 
 def get_payload(jwtoken: str) -> dict:
-    """Returns decoded information from JWT
-    or None in case something fails.
+    """Returns decoded information from JWT or None in case something fails.
 
     Args:
     ----
@@ -65,6 +64,7 @@ def get_payload(jwtoken: str) -> dict:
     """
     try:
         payload = decodeJWT(jwtoken)
-    except Exception:
+    except Exception as e:
+        logger.exception(e)
         payload = None
     return payload

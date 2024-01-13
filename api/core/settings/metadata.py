@@ -1,8 +1,8 @@
 #  Settings included in the initial app object
 
 class AppMetadata:
-    title: str = "Idoven API"
-    description: str = "This API contains a Backend Challenge proposed by Idoven"
+    title: str = "FastAPI API"
+    description: str = "This API contains a Backend Challenge"
     summary: str = "To-Do"
     version: str = "0.1.0"
     contact: dict = {

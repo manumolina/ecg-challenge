@@ -1,4 +1,3 @@
-import logging
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
@@ -8,12 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from core.database import database
 from core.settings import settings
+from libs.logger import logger
+from middlewares.logger import LogMiddleware
 from services.ecg.routers.ecg import PATH_PREFIX as ECG_PREFIX
 from services.ecg.routers.ecg import ecg_router
 from services.user.routers.user import PATH_PREFIX as USER_PREFIX
 from services.user.routers.user import users_router
-
-logger = logging.getLogger(__name__)
 
 
 def create_api() -> FastAPI:
@@ -26,6 +25,7 @@ def create_api() -> FastAPI:
         allow_methods=["GET", "POST"],
         allow_headers=["*"],
     )
+    app.add_middleware(LogMiddleware)
 
     @app.on_event("startup")
     def on_startup():

@@ -16,7 +16,7 @@ def test_load_with_valid_data(
     mock_ecg_insert.return_value = None
 
     test_ecgs = get_list_of_valid_ecgs
-    result = ECGLogic(authenticate_mock_client).load(test_ecgs)
+    result = ECGLogic(authenticate_mock_client).load_list(test_ecgs)
 
     expected_result = {
         "inserted": len(test_ecgs),
@@ -38,7 +38,7 @@ def test_load_with_one_invalid_data(
     mock_ecg_insert.return_value = None
 
     test_ecgs = get_list_of_invalid_ecgs
-    result = ECGLogic(authenticate_mock_client).load(test_ecgs)
+    result = ECGLogic(authenticate_mock_client).load_list(test_ecgs)
 
     assert result["inserted"] != len(test_ecgs)
     assert result["invalid"]["total"] > 0

@@ -23,7 +23,7 @@ class ECGData:
         with database.session() as session:
             try:
                 # header
-                new_ecg = ECG(**{"user": user_id})
+                new_ecg = ECG(user_id)
                 session.add(new_ecg)
 
                 # detail

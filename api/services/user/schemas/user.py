@@ -33,8 +33,8 @@ class UserImport(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "username": "test_idoven",
-                "email": "test@idoven-challenge.com",
+                "username": "test_fastapi",
+                "email": "test@fastapi-challenge.com",
                 "role": "0",
             },
         }
@@ -47,8 +47,8 @@ class UserLoginSchema(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "email": "test@idoven-challenge.com",
-                "password": "idovenpassword",
+                "email": "test@fastapi-challenge.com",
+                "password": "fastapipassword",
             },
         }
 

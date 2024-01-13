@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "idoven-challenge"
+name = "fastapi-challenge"
 version = "0.1.0"
 description = ""
 authors = ["Manu Molina <manu.molinam@gmail.com>"]
@@ -84,11 +84,14 @@ ignore = [
     "PT004",  # fixtures with leading _ are silently ignored if autouse is True
     "PT007",  # pytest row should also be able to use pytest.param values
     "D1",     # we don't currently enforce docstrings
+    "D401",   # we don't currently enforce docstrings
     "D417",   # we don't currently enforce docstrings
     "D203",   # resolve incompatibility with D211
     "D213",   # resolve incompatibility with D212,
     "FBT003", # sometimes 3rd parties introduce boolean traps and we need to adjust
     "TRY301", # more trouble then value.
+    "N802",
+    "I001", # not included black at this moment to sort blocks
 ]
 ignore-init-module-imports = true
 

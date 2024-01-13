@@ -1,12 +1,8 @@
 # Product Software Engineer Backend
 
-<p style="text-align:center;" align="center"><a href="https://idoven.ai/"><img align="center" style="margin-bottom:20px;" src="https://dayonecaixabank.es/wp-content/uploads/2020/07/Cabecera_idoven.jpg"  width="30%" /></a><br /><br /></p>
+This API is created under some fake requeriments.  
 
-This API is created under the requeriments proposed by Idoven, for the job offer:  
-"Product Software Engineer Backend at Idoven".  
-<a href="https://github.com/idoven/backend-challenge/blob/main/README.md">Backend Coding Challenge</a>
-
-At Idoven, we have a specific requirement. We aim to implement a microservice that accepts electrocardiograms (ECG) and provides various insights about them, such as calculating the number of zero crossings of the signal.
+We aim to implement a microservice that accepts electrocardiograms (ECG) and provides various insights about them, such as calculating the number of zero crossings of the signal.
 
 ## Table of contents
 * [General info](#general-info)
@@ -58,8 +54,8 @@ API
 ## Setup
 The easiest way to work with this server program is working with Docker containers.  
 I recommend you the next steps:
-> git clone https://github.com/manumolina/idoven-challenge/  
-> cd idoven-challenge  
+> git clone https://github.com/manumolina/fastapi-challenge/  
+> cd fastapi-challenge  
 > docker-compose build  
 > docker-compose up -d  
 
@@ -90,17 +86,17 @@ http://localhost:5001/redoc
 
 ## Tests
 To check the current coverage of the server program:  
-> docker exec -it idoven-challenge-api /bin/bash  
+> docker exec -it fastapi-challenge-api /bin/bash  
 > poetry run pytest --cov -v -p no:warnings --no-cov-on-fail tests/  
 
 or  
 
-> docker exec idoven-challenge-api poetry run pytest --cov -v -p no:warnings --no-cov-on-fail tests/  
+> docker exec fastapi-challenge-api poetry run pytest --cov -v -p no:warnings --no-cov-on-fail tests/  
 
 At the time the environment is created, three test users are also created:  
-> admin@idoven-challenge.com:VYZfg8w7xvIUR7GdzjrIgYUNnjIKFM9R  
-> user_1@idoven-challenge.com:gCPiYzbjE3VrUXYzFLq3TIA0HlScjFdS  
-> user_2@idoven-challenge.com:smz4Ui79xCNxZKaTgKkP82Yy0T1az0XU  
+> admin@fastapi-challenge.com:VYZfg8w7xvIUR7GdzjrIgYUNnjIKFM9R  
+> user_1@fastapi-challenge.com:gCPiYzbjE3VrUXYzFLq3TIA0HlScjFdS  
+> user_2@fastapi-challenge.com:smz4Ui79xCNxZKaTgKkP82Yy0T1az0XU  
 
 More users can be created using the appropriate endpoint.  
 

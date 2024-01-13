@@ -1,10 +1,14 @@
 from fastapi import HTTPException, status
 
-from core.exceptions import BaseErrorSavingData, BaseUnknownError
+from core.exceptions import BaseErrorSavingData, BaseUnknownError, BaseErrorSavingFile
 
 
 def ECGUnknownError(error: str):
     BaseUnknownError(error)
+
+
+def ECGErrorSavingFile():
+    BaseErrorSavingFile()
 
 
 def ECGErrorSavingData():

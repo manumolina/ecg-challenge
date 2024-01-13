@@ -9,7 +9,7 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 
 class Database:
     def __init__(self, db_url: str = DATABASE_URL) -> None:
-        self.engine = create_engine(db_url, echo=True)
+        self.engine = create_engine(db_url, echo=False)
 
     def init_db(self):
         SQLModel.metadata.create_all(self.engine)

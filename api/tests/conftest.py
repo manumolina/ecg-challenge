@@ -22,7 +22,7 @@ def get_single_user_dict():
         "created": datetime.now(),
         "updated": datetime.now(),
         "username": random_string,
-        "email": f"{random_string}@idoven-challenge.com",
+        "email": f"{random_string}@fastapi-challenge.com",
         "password": random_string,
         "disabled": False,
         "role": 0,
@@ -103,13 +103,13 @@ def authenticate_mock_client():
 
 @pytest.fixture()
 def override_get_db():
-    test_db = "postgresql://idoven:idoven@db:5432/test"
+    test_db = "postgresql://fastapi:fastapi@db:5432/test"
     engine = Database(test_db).engine
-    TestingSessionLocal = sessionmaker(
+    testing_session_local = sessionmaker(
         autocommit=False, autoflush=False, bind=engine,
     )
     try:
-        db = TestingSessionLocal()
+        db = testing_session_local()
         yield db
     finally:
         db.close()
@@ -118,7 +118,7 @@ def override_get_db():
 @pytest.fixture()
 def get_test_admin_token():
     payload = signJWT(
-        user_email="admin@idoven-challenge.com",
+        user_email="admin@fastapi-challenge.com",
         role=99,
     )
     return ["Bearer", payload["access_token"]]
@@ -127,7 +127,7 @@ def get_test_admin_token():
 @pytest.fixture()
 def get_test_standard_token():
     payload = signJWT(
-        user_email="user_id@idoven-challenge.com",
+        user_email="user_id@fastapi-challenge.com",
         role=0,
     )
     return ["Bearer", payload["access_token"]]

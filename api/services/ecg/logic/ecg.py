@@ -1,23 +1,29 @@
+import json
+import shutil
 import uuid
 
-from fastapi import Request
+from fastapi import Request, UploadFile
 
 from services.ecg.data_sources.ecg import ECGData
-from services.ecg.schemas.ecg import ECG, ECGImportList, ECGLead, ECGOutput
+from services.ecg.exceptions import ECGErrorSavingFile, ECGWithInvalidData
+from services.ecg.schemas.ecg import (
+    ECG, ECGImport, ECGImportList, ECGLead, ECGOutput,
+)
 from services.user.logic.user import UserLogic
 
 
 class ECGLogic:
     def __init__(self, request: Request) -> None:
-        self.user_id = UserLogic().get_user_id_from_request(request)
+        self._user_id = UserLogic().get_user_id_from_request(request)
 
     # ------------- #
     # Basic methods
     # ------------- #
-    def load(
+    def load_list(
         self, ecg_list: ECGImportList,
     ) -> dict:
-        """This method:
+        """Load values from a list of ECGs.
+
         * Analize total samples and signals are equal
         * Execute algorithm to calculate nº of zeros in signals
         * Save info in DB.
@@ -49,8 +55,56 @@ class ECGLogic:
             valid_ecgs.append(ecg)
 
         return self.save(
-            self.user_id, valid_ecgs, invalid_ecgs,
+            self._user_id, valid_ecgs, invalid_ecgs,
         )
+
+    def load_file(self, uploaded_file: UploadFile) -> dict:
+        """Open and read file.
+
+        Data is not evaluated in this step
+        """
+        ecg_list = []
+        try:
+            with open(uploaded_file.filename, "r"):
+                while contents := uploaded_file.file.read():
+                    clean_content = json.loads(contents.decode("utf-8"))
+                    for line in clean_content:
+                        ecg_list.append(line)
+        except OSError as e:
+            return {"status": 0, "message": f"There was an error reading the file: {e}"}
+        except Exception as e:
+            return {"status": 0, "message": f"There was an unknown error reading the file: {e}"}
+        finally:
+            uploaded_file.file.close()
+
+        """
+        Analyzing rows to avoid wrong structures
+        """
+        ecg_object_list = []
+        for ecg in ecg_list:
+            try:
+                ecg_object = ECGImport(**ecg)
+                ecg_object_list.append(ecg_object)
+            except ValueError:
+                ECGWithInvalidData(ecg)
+
+        """
+        Saving lines after data is checked
+        """
+        self.load_list(ecg_object_list)
+
+        return {"status": 1, "message": "OK"}
+
+    @staticmethod
+    def store_file(uploaded_file: UploadFile) -> None:
+        try:
+            path = f"data/files/{uploaded_file.filename}"
+            with open(path, "w+b") as file:
+                shutil.copyfileobj(uploaded_file.file, file)
+        except OSError:
+            ECGErrorSavingFile()
+        except Exception:
+            ECGErrorSavingFile()
 
     @staticmethod
     def save(
@@ -59,6 +113,7 @@ class ECGLogic:
         invalid_ecgs: list[dict],
     ) -> dict:
         """Save valid ecgs in the DB.
+
         Returns a dictionary with information
         about the result of the operation.
 
@@ -101,7 +156,7 @@ class ECGLogic:
         result = ECGData.get(
             tables=[ECG, ECGLead],
             where={
-                ECG.user: uuid.UUID(str(self.user_id)),
+                ECG.user: uuid.UUID(str(self._user_id)),
             },
         )
         return [
